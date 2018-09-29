@@ -1,7 +1,7 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "Production tracking shall be defined as the collection of activities that prepare the production response for Level 4. This includes summarizing and reporting information about personnel and equipment actually used to produce product, material consumed, material produced and other relevant production data such as costs and performance analysis results. Production tracking also provides information to detailed production scheduling and Level 4 scheduling activities so schedules can be updated on the basis of current conditions\n\n## 0.1.0 Information\n- This is a point\n- This is another point",
+    "description" : "Production tracking shall be defined as the collection of activities that prepare the production response for Level 4. This includes summarizing and reporting information about personnel and equipment actually used to produce product, material consumed, material produced and other relevant production data such as costs and performance analysis results. Production tracking also provides information to detailed production scheduling and Level 4 scheduling activities so schedules can be updated on the basis of current conditions",
     "version" : "0.1.0",
     "title" : "Tracking App Service API",
     "contact" : {
