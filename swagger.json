@@ -1,0 +1,724 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Production tracking shall be defined as the collection of activities that prepare the production response for Level 4. This includes summarizing and reporting information about personnel and equipment actually used to produce product, material consumed, material produced and other relevant production data such as costs and performance analysis results. Production tracking also provides information to detailed production scheduling and Level 4 scheduling activities so schedules can be updated on the basis of current conditions\n\n## 0.1.0 Information\n- This is a point\n- This is another point",
+    "version" : "0.1.0",
+    "title" : "Tracking App Service API",
+    "contact" : {
+      "email" : "mason.yarrick@bhp.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags" : [ {
+    "name" : "admins",
+    "description" : "Secured Admin-only calls"
+  }, {
+    "name" : "developers",
+    "description" : "Operations available to regular developers"
+  } ],
+  "paths" : {
+    "/workPerformance/{id}" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "gets work performances by ID",
+        "operationId" : "getWorkPerformanceItem",
+        "description" : "Gets work performances with specific IDs\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "description" : "Work Performance ID",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "query",
+          "name" : "version",
+          "description" : "The version of the Work Performance to retrieve. If not provided, will return the most recent version.",
+          "required" : false,
+          "type" : "number"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/WorkPerformance"
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "400" : {
+            "description" : "Bad input value"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admins" ],
+        "summary" : "deletes work performances by ID",
+        "operationId" : "deleteWorkPerformanceItem",
+        "description" : "Delete work performances with specific IDs\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "description" : "Work Performance ID",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Deleted"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "admins" ],
+        "summary" : "update work performances by ID",
+        "operationId" : "updateWorkPerformanceItem",
+        "description" : "Updates work performances with specific IDs\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "description" : "Work Performance ID",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "workPerformance",
+          "description" : "Work Performance to create",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/WorkPerformance"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "400" : {
+            "description" : "Bad input parameter"
+          }
+        }
+      }
+    },
+    "/workPerformance" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "searches for work performances",
+        "operationId" : "findWorkPerformances",
+        "description" : "Finds work performances with specific attributes\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "workType",
+          "description" : "The type of work to find performance by",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "query",
+          "name" : "minStartTime",
+          "type" : "string",
+          "required" : false,
+          "description" : "The minimum start time to return"
+        }, {
+          "in" : "query",
+          "name" : "maxEndTime",
+          "type" : "string",
+          "required" : false,
+          "description" : "The maximum end time to return"
+        }, {
+          "in" : "query",
+          "name" : "hierarchyScopeId",
+          "type" : "string",
+          "required" : false,
+          "description" : "The hierarchy scope to find work performance by"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/WorkPerformance"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad input parameter"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "admins" ],
+        "summary" : "create work performances",
+        "operationId" : "createWorkPerformance",
+        "description" : "Create a new work performance\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "performanceInfo",
+          "schema" : {
+            "type" : "object",
+            "required" : [ "workPerformance", "materialLots", "equipment" ],
+            "properties" : {
+              "workPerformance" : {
+                "$ref" : "#/definitions/WorkPerformance"
+              },
+              "materialLots" : {
+                "type" : "object",
+                "properties" : {
+                  "added" : {
+                    "type" : "array",
+                    "items" : {
+                      "$ref" : "#/definitions/MaterialLot"
+                    }
+                  },
+                  "changed" : {
+                    "type" : "array",
+                    "items" : {
+                      "$ref" : "#/definitions/MaterialLot"
+                    }
+                  },
+                  "deleted" : {
+                    "type" : "array",
+                    "items" : {
+                      "$ref" : "#/definitions/MaterialLot"
+                    }
+                  }
+                }
+              },
+              "equipment" : {
+                "type" : "object",
+                "properties" : {
+                  "added" : {
+                    "type" : "array",
+                    "items" : {
+                      "$ref" : "#/definitions/EquipmentItem"
+                    }
+                  },
+                  "changed" : {
+                    "type" : "array",
+                    "items" : {
+                      "$ref" : "#/definitions/EquipmentItem"
+                    }
+                  },
+                  "deleted" : {
+                    "type" : "array",
+                    "items" : {
+                      "$ref" : "#/definitions/EquipmentItem"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Created"
+          },
+          "400" : {
+            "description" : "Bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "WorkPerformance" : {
+      "type" : "object",
+      "description" : "Work performance shall be defined as a collection of work responses that is a report on requested manufacturing requests. Work responses are responses from manufacturing that are associated with a work request. There may be one or more work responses for a single work request if the manufacturing facility needs to split the work request into smaller elements.",
+      "required" : [ "id", "version", "workType", "startTime", "publishedDate", "hierarchyScope" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "A unique identification of the work performance and could include version and revision identification. The ID shall be used in other parts of the model when the work performance needs to be identified.",
+          "example" : "ff770f4b-8d99-4a2e-8572-705de85e327c"
+        },
+        "version" : {
+          "type" : "number",
+          "example" : 1
+        },
+        "workType" : {
+          "type" : "string",
+          "description" : "Describes the category of work.",
+          "example" : "{Production,Maintenance,Quality,Inventory}"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Contains additional information and descriptions of the work performance.",
+          "example" : "Digging Activity"
+        },
+        "workScheduleId" : {
+          "type" : "string",
+          "description" : "An identification of the associated work schedule, if applicable.  Work performance may not relate to a work schedule, it may be a report on all work for a specific time, or reported on by plant floor events.",
+          "example" : "e044bd49-3fa3-41e6-869a-4de78433ea15"
+        },
+        "startTime" : {
+          "type" : "string",
+          "description" : "The starting time of the associated work performance, if applicable.",
+          "example" : "201809151000"
+        },
+        "endTime" : {
+          "type" : "string",
+          "description" : "The ending time of the associated work performance, if applicable.",
+          "example" : "201809151100"
+        },
+        "publishedDate" : {
+          "type" : "string",
+          "description" : "The date and time on which the work performance was published or generated.",
+          "example" : "201809141000"
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "description" : "Identifies where the exchanged information fits within the role based equipment hierarchy.",
+          "example" : "ER-IP"
+        },
+        "workPerformances" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/WorkPerformance"
+          }
+        },
+        "workResponses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/WorkResponse"
+          }
+        }
+      }
+    },
+    "WorkResponse" : {
+      "type" : "object",
+      "description" : "The responses from manufacturing that are associated with a work request shall be defined as work responses. There may be one or more work responses for a single work request if the manufacturing facility needs to split the work request into smaller elements of work.  A work response may include the status of the request, such as the percentage complete, a finished status, or an aborted status.",
+      "required" : [ "id", "workType", "startTime", "hierarchyScope" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "An identification within the associated work performance.  The ID shall be used in other parts of the model when the work response needs to be identified.",
+          "example" : "aa8184be-0e77-48bf-9bdd-f4046d77ce4b"
+        },
+        "workType" : {
+          "type" : "string",
+          "description" : "Describes the category of work.",
+          "example" : "{Production,Maintenance,Quality,Inventory}"
+        },
+        "workRequestId" : {
+          "type" : "string",
+          "description" : "An identification of the associated work request, if applicable.  Work response may not relate to a work request, it may be a report on all work for a specific time, or reported on by plant floor events.",
+          "example" : "3d52ede2-5c28-4099-868d-bfe0735996b8"
+        },
+        "startTime" : {
+          "type" : "string",
+          "description" : "The starting time of this work response.",
+          "example" : "201809151000"
+        },
+        "endTime" : {
+          "type" : "string",
+          "description" : "The ending time of this work response.",
+          "example" : "201809151100"
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "description" : "Identifies where the exchanged information fits within the role based equipment hierarchy.",
+          "example" : "ER-IP"
+        },
+        "workResponses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/WorkResponse"
+          }
+        },
+        "jobResponses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/JobResponse"
+          }
+        }
+      }
+    },
+    "JobResponse" : {
+      "type" : "object",
+      "description" : "The responses from manufacturing that are associated with a job order shall be defined as a job response. There may be one or more job responses for a single job order if the manufacturing facility needs to split the job order into smaller elements of work.  A job order may include the status of the request, such as the percentage complete, a finished status, or an aborted status.",
+      "required" : [ "id", "workType", "startTime", "hierarchyScope" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "An identification within the associated work response.  The ID shall be used in other parts of the model when the work response needs to be identified.",
+          "example" : "adfe32f6-822d-47e2-95f5-12b0dda589c3"
+        },
+        "workType" : {
+          "type" : "string",
+          "description" : "Describes the category of work.",
+          "example" : "{Production,Maintenance,Quality,Inventory}"
+        },
+        "jobOrderId" : {
+          "type" : "string",
+          "description" : "An identification of the associated job order, if applicable.  Job responses may not relate to a job order, it may be a report on all work for a specific time, or reported on by plant floor events.",
+          "example" : "f82cc6a7-6fd4-492a-a558-5802a3fdcd25"
+        },
+        "workDirectiveId" : {
+          "type" : "string",
+          "description" : "Identifies the associated work directive that was used, if applicable. This may not match the request, if alternate specifications are allowed.",
+          "example" : "Export quality widget"
+        },
+        "workDirectiveVersion" : {
+          "type" : "string",
+          "description" : "Identifies the version of the associated work directive that was used, if applicable.",
+          "example" : "1.0"
+        },
+        "workMasterId" : {
+          "type" : "string",
+          "description" : "The version of the work master may be specificed in the attribute of this job response."
+        },
+        "workflowSpecificationId" : {
+          "type" : "string",
+          "description" : "The workflow specification related to this job response.",
+          "example" : "ER-LOADHAUL"
+        },
+        "workflowSpecificationNodeId" : {
+          "type" : "string",
+          "description" : "The workflow specification node related to this job response."
+        },
+        "startTime" : {
+          "type" : "string",
+          "description" : "The starting time of this job response.",
+          "example" : "201809141500"
+        },
+        "endTime" : {
+          "type" : "string",
+          "description" : "The ending time of this job response.",
+          "example" : "201809141600"
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "description" : "Identifies where the exchanged information fits within the role based equipment hierarchy.",
+          "example" : "ER-IP"
+        },
+        "equipmentActuals" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/EquipmentActual"
+          }
+        },
+        "materialActuals" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialActual"
+          }
+        },
+        "jobResponses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/JobResponse"
+          }
+        }
+      }
+    },
+    "EquipmentActual" : {
+      "type" : "object",
+      "description" : "An identification of an equipment capability used during a specified segment shall be identified as an equipment actual. Operations functions often require equipment as a resource to carry out tasks. Equipment actual shall include the identification of the equipment used, usually identifying a specific piece of equipment. Specific information about equipment actuals shall be listed in equipment actual properties.\n\n**V0.1.0 Information**\nThe following properties are not supported in this version:\n- spatialDefinition\n- properties",
+      "required" : [ "equipmentUse", "quantity", "quantityUnitOfMeasure" ],
+      "properties" : {
+        "equipmentClassId" : {
+          "type" : "string",
+          "description" : "Identifies the associated equipment class or set of equipment classes actually used for a specific segment response.",
+          "example" : "ER-9400"
+        },
+        "equipmentId" : {
+          "type" : "string",
+          "description" : "Identifies the associated equipment or set of equipment actually used for a specific segment response.  Typically either equipment class or equipment is specified, but not both.",
+          "example" : "EX7015"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Contains additional information and descriptions of the equipment actual.",
+          "example" : "Loading a Truck"
+        },
+        "equipmentUse" : {
+          "type" : "string",
+          "description" : "Defines the actual use of the equipment class or equipment.",
+          "example" : "Loading"
+        },
+        "quantity" : {
+          "type" : "number",
+          "description" : "Specifies the amount of equipment resources used in parent segment, if applicable.  Applies to each member of the equipment and equipment class sets.",
+          "example" : 1
+        },
+        "quantityUnitOfMeasure" : {
+          "type" : "string",
+          "description" : "Identifies the unit of measure of the quantity, if applicable.",
+          "example" : "Each"
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "description" : "The part of the supply chain that this equipment was used in.",
+          "example" : "ER-IP"
+        }
+      }
+    },
+    "MaterialActual" : {
+      "type" : "object",
+      "description" : "An identification of a material that was used in the operations request shall be presented as a material actual. Material actual contain definitions of materials that may have be consumed, produced, replaced, sampled, or otherwise used in manufacturing.\n\n**V0.1.0 Information**\nThe following properties are not supported in this version:\n- spatialDefinition",
+      "required" : [ "quantity", "quantityUnitOfMeasure", "materialUse" ],
+      "properties" : {
+        "materialClassId" : {
+          "type" : "string",
+          "description" : "Identifies the associated material class or set of material classes actually made for a specific segment response.",
+          "example" : "ER-IS-HG"
+        },
+        "materialDefinitionId" : {
+          "type" : "string",
+          "description" : "Identifies the associated material definition or set of material definitions actually made for a specific segment response.",
+          "example" : "ER-HG1"
+        },
+        "materialLotId" : {
+          "type" : "string",
+          "description" : "Identifies the associated material lot or set of material lots actually made for a specific segment response.",
+          "example" : "Block-123"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Contains additional information and descriptions of the material produced actual.",
+          "example" : "In-Situ Blast Block"
+        },
+        "materialUse" : {
+          "type" : "string",
+          "description" : "Identifies the use of the material.  Defined values for production operations are: Consumable, Consumed, Produced. Defined values for maintenance operations are: Consumable, Replaced Asset, Replacement Asset Defined values for quality operations are: Consumable, Sample, Returned Sample Defined values for inventory operations are: Consumable, Carrier, Returned Carrier",
+          "example" : "{Produced,Consumed,Consumable,Replaced Asset,Replacement Asset,Sample,Returned Sample,Returned Carrier}"
+        },
+        "storageLocationId" : {
+          "type" : "string",
+          "description" : "Identifies the actual location of the produced material, if applicable.",
+          "example" : "ER-ROM_F1"
+        },
+        "quantity" : {
+          "type" : "number",
+          "description" : "Specifies the amount of material produced by the parent segment.  Applies to each member of the material lot, materials definition, or material class sets.",
+          "example" : 250
+        },
+        "quantityUnitOfMeasure" : {
+          "type" : "string",
+          "description" : "Identifies the unit of measure of the quantity, if applicable.",
+          "example" : "Tonnes"
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "description" : "The part of the supply chain that this material was used in.",
+          "example" : "ER-IP"
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialActualProperty"
+          }
+        }
+      }
+    },
+    "MaterialActualProperty" : {
+      "type" : "object",
+      "description" : "**V0.1.0 Information**\nNesting of properties is not supported in this version",
+      "required" : [ "id", "value", "quantity", "quantityUnitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "An identification of the associated material property or material class property for a specific segment response.",
+          "example" : "Fe"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Contains additional information and descriptions of the material produced actual property definition.",
+          "example" : "Iron Content"
+        },
+        "value" : {
+          "type" : "string",
+          "description" : "The value or set of values for the associated property.  For example: Red, Orange, Yellow, Green, Blue, Indigo, Violet.",
+          "example" : "Waste"
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
+          "example" : "{High Grade,Waste,Blend Grade}"
+        },
+        "quantity" : {
+          "type" : "number",
+          "description" : "Specifies the amount of material produced by the parent segment.  Applies to each member of the material lot, materials definition, or material class sets.",
+          "example" : 38
+        },
+        "quantityUnitOfMeasure" : {
+          "type" : "string",
+          "description" : "Identifies the unit of measure of the quantity, if applicable.",
+          "example" : "Percentage"
+        }
+      }
+    },
+    "MaterialLot" : {
+      "type" : "object",
+      "description" : "**V0.1.0 Information**\nThe following properties are not supported in this version:\n- version\n- status\n- effectiveFrom\n- effectiveTo",
+      "required" : [ "id", "storageLocationId" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "A unique identification of a specific material lot, within the scope of the information exchanged (production capability, production schedule, production performance, …) The ID shall be used in other parts of the model when the material lot needs to be identified, such as the production capability for this material lot, or a production response identifying the material lot used.",
+          "example" : "Block XYZ"
+        },
+        "materialClassId" : {
+          "type" : "string",
+          "example" : "In-Situ"
+        },
+        "materialDefinitionId" : {
+          "type" : "string",
+          "example" : "HG1"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Additional information about the material lot.",
+          "example" : "ER Crusher"
+        },
+        "storageLocationId" : {
+          "type" : "string",
+          "description" : "An identification of the storage location or a physical location of the material lot.",
+          "example" : "ER-PC"
+        },
+        "quantity" : {
+          "type" : "number",
+          "description" : "The quantity of the material lot.",
+          "example" : 5000
+        },
+        "quantityUnitOfMeasure" : {
+          "type" : "string",
+          "description" : "The unit of measure of the associated quantity, if applicable.",
+          "example" : "Tonnes"
+        },
+        "spatialDefinition" : {
+          "type" : "array",
+          "description" : "The location or footprint of this Equipment item.",
+          "items" : {
+            "$ref" : "#/definitions/SpatialDefinition"
+          }
+        },
+        "properties" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/MaterialLotProperty"
+          }
+        }
+      }
+    },
+    "MaterialLotProperty" : {
+      "type" : "object",
+      "description" : "**V0.1.0 Information**\nThe following fields are included in this version, which are not part of the standard specification:\n- context\n- valueType",
+      "required" : [ "id", "description", "value", "valueUnitOfMeasure" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "An identification of a specific material class property.",
+          "example" : "DigRate"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Additional information about the material class property.",
+          "example" : "Dig Rate"
+        },
+        "value" : {
+          "type" : "string",
+          "description" : "The value, set of values, or range of the property.",
+          "example" : 3600
+        },
+        "valueUnitOfMeasure" : {
+          "type" : "string",
+          "description" : "The unit of measure of the associated property value, if applicable.",
+          "example" : "Tonnes/Hour"
+        },
+        "context" : {
+          "type" : "string",
+          "description" : "The context associated with the property. This describes the kind of property",
+          "example" : "{Unstructured,Quality,Designation,NotApplicable}"
+        },
+        "valueType" : {
+          "type" : "string",
+          "description" : "The base type of the property value. This is used when rehydrating the object into native values",
+          "example" : "{String,Decimal,Boolean,DateTime,Integer}"
+        },
+        "properties" : {
+          "type" : "array",
+          "description" : "The properties that this material lot property contains.",
+          "items" : {
+            "$ref" : "#/definitions/MaterialLotProperty"
+          }
+        }
+      }
+    },
+    "EquipmentItem" : {
+      "description" : "**V0.1.0 Information**\nThe following properties are not supported in this version:\n- version\n- effectiveFrom\n- effectiveTo\n- spatialDefinition\n- properties",
+      "type" : "object",
+      "required" : [ "id", "equipmentLevel", "hierarchyScopeId" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "A unique identification of a specific piece of equipment, within the scope of the information exchanged (manufacturing operations definition, scheduling, capability and performance) The equipment ID shall be used in other parts of the model when the equipment needs to be identified, such as the production capability for a piece of equipment, or a production response identifying the equipment used.",
+          "example" : "EX7015"
+        },
+        "equipmentLevel" : {
+          "type" : "string",
+          "description" : "An identification of the level in the role based equipment hierarchy.",
+          "example" : "Work Unit"
+        },
+        "equipmentClassId" : {
+          "type" : "string",
+          "description" : "The type of this Equipment item",
+          "example" : "ER-9400"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Additional information about the equipment.",
+          "example" : "Excavator EX7015"
+        },
+        "hierarchyScopeId" : {
+          "type" : "string",
+          "description" : "The part of the supply chain where the Equipment item exists.",
+          "example" : "ER-IP"
+        }
+      }
+    },
+    "SpatialDefinition" : {
+      "type" : "object",
+      "description" : "The spatial definition provides a means of communicating 0-dimensional point, 1-dimensional line, or 2-dimensionael shape or 3-dimensional solid geospatial location data for planning/scheduling, actuals, resources, and analytics. Spatial definition identifies a value and the pre-defined coordinate reference system using following attributes a)  value; b)  format; c)  spatial reference identifier (SRID); and d)  SRID authority. A fully qualified spatial definition exchange has all 4 attributes as a minimum.  In some information exchanges, sending and receiving applications may have a specified agreement on format, SRID, and SRID authority. Spatial definition is distinct from, and separate to storage location and physical location. Storage location attribute is defined for material lots and material sublots as a non-spatial definition of location. The physical location attribute logically identifies a “place” which is actual physical location of the physical asset",
+      "properties" : {
+        "value" : {
+          "type" : "string",
+          "description" : "A string serialization EXAMPLE 1 UN/CEFACT CCTS: TextType) of the geospatial information in the format indicated in the format attribute.",
+          "example" : "POLYGON ( (-2594646.99104 11815676.18456, -2594645.14848 11815683.08856, -2594646.99104 11815676.18456 ) )"
+        },
+        "format" : {
+          "type" : "string",
+          "description" : "An enumerator that determines the format of the value attribute.",
+          "example" : "WKT"
+        },
+        "srid" : {
+          "type" : "string",
+          "description" : "SRID is the Spatial Reference Identifier which identifies the coordinate reference system to identify a pre-defined coordinate reference system (pre-configured into communication systems). An identifier from the SRID Authority.",
+          "example" : "6283 (Geocentric Datum of Australia 1994)"
+        },
+        "sridAuthority" : {
+          "type" : "string",
+          "description" : "The SRID authority identifies the authority that defines the coordinate reference system identified by the SRID. EXAMPLE 2 EPSG (see http://www.epsg-registry.org/). An organization may choose to define its own SRIDs. EXAMPLE 3 Reference its own authority.",
+          "example" : "EPSG"
+        }
+      }
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "schemes" : [ "https" ],
+  "basePath" : "/BHP_TECH_SI/Tracking_API/1.0.0"
+}
