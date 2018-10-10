@@ -169,7 +169,7 @@
           "name" : "performanceInfo",
           "schema" : {
             "type" : "object",
-            "required" : [ "workPerformance", "materialLots", "equipment" ],
+            "required" : [ "workPerformance" ],
             "properties" : {
               "workPerformance" : {
                 "$ref" : "#/definitions/WorkPerformance"
