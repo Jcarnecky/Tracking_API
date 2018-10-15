@@ -527,7 +527,6 @@
     },
     "MaterialActualProperty" : {
       "type" : "object",
-      "description" : "**V0.1.0 Information**\nNesting of properties is not supported in this version",
       "required" : [ "id", "value", "quantity", "quantityUnitOfMeasure" ],
       "properties" : {
         "id" : {
@@ -559,6 +558,13 @@
           "type" : "string",
           "description" : "Identifies the unit of measure of the quantity, if applicable.",
           "example" : "Percentage"
+        },
+        "properties" : {
+          "type" : "array",
+          "description" : "The properties that this material actual property contains.",
+          "items" : {
+            "$ref" : "#/definitions/MaterialActualProperty"
+          }
         }
       }
     },
