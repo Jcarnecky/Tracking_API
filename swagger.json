@@ -571,7 +571,7 @@
     "MaterialLot" : {
       "type" : "object",
       "description" : "**V0.1.0 Information**\nThe following properties are not supported in this version:\n- version\n- status\n- effectiveTo",
-      "required" : [ "id", "storageLocationId" ],
+      "required" : [ "id", "storageLocationId", "effectiveFrom" ],
       "properties" : {
         "id" : {
           "type" : "string",
