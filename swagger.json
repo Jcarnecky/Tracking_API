@@ -570,7 +570,7 @@
     },
     "MaterialLot" : {
       "type" : "object",
-      "description" : "**V0.1.0 Information**\nThe following properties are not supported in this version:\n- version\n- status\n- effectiveFrom\n- effectiveTo",
+      "description" : "**V0.1.0 Information**\nThe following properties are not supported in this version:\n- version\n- status\n- effectiveTo",
       "required" : [ "id", "storageLocationId" ],
       "properties" : {
         "id" : {
@@ -605,6 +605,11 @@
           "type" : "string",
           "description" : "The unit of measure of the associated quantity, if applicable.",
           "example" : "Tonnes"
+        },
+        "effectiveFrom" : {
+          "type" : "string",
+          "description" : "The timestamp that this state of the Material Lot is effective from.",
+          "example" : "201808151000"
         },
         "spatialDefinition" : {
           "type" : "array",
