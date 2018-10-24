@@ -664,7 +664,7 @@
       }
     },
     "EquipmentItem" : {
-      "description" : "**V0.1.0 Information**\nThe following properties are not supported in this version:\n- version\n- effectiveFrom\n- effectiveTo\n- spatialDefinition\n- properties",
+      "description" : "**V0.1.0 Information**\nThe following properties are not supported in this version:\n- version\n- effectiveTo\n- spatialDefinition\n- properties",
       "type" : "object",
       "required" : [ "id", "equipmentLevel", "hierarchyScopeId" ],
       "properties" : {
@@ -692,6 +692,11 @@
           "type" : "string",
           "description" : "The part of the supply chain where the Equipment item exists.",
           "example" : "ER-IP"
+        },
+        "effectiveFrom" : {
+          "type" : "string",
+          "description" : "The timestamp that this Equipment item version is applicable from.",
+          "example" : "201808151000"
         }
       }
     },
