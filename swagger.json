@@ -457,7 +457,7 @@
     },
     "MaterialActual" : {
       "type" : "object",
-      "description" : "An identification of a material that was used in the operations request shall be presented as a material actual. Material actual contain definitions of materials that may have be consumed, produced, replaced, sampled, or otherwise used in manufacturing.\n\n**V0.1.0 Information**\nThe following properties are not supported in this version:\n- spatialDefinition",
+      "description" : "An identification of a material that was used in the operations request shall be presented as a material actual. Material actual contain definitions of materials that may have be consumed, produced, replaced, sampled, or otherwise used in manufacturing.\n\n**V0.1.0 Information**\nThe following properties are not supported in this version:\n- spatialDefinition\n\nThe following fields are included in this version, which are not part of the standard specification:\n- EffectiveDate",
       "required" : [ "quantity", "quantityUnitOfMeasure", "materialUse" ],
       "properties" : {
         "materialClassId" : {
@@ -504,6 +504,11 @@
           "type" : "string",
           "description" : "The part of the supply chain that this material was used in.",
           "example" : "ER-IP"
+        },
+        "effectiveDate" : {
+          "type" : "string",
+          "description" : "The Date at which the actual is effective, within the date range of the parent job Response.",
+          "example" : "201808151000"
         },
         "properties" : {
           "type" : "array",
